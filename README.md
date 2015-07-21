@@ -1,6 +1,6 @@
 # Sensor Emulator
 
-TODO
+Sensor Emulator is software for emulating sensed in building environments and sending them exploitng MQTT protocol.
 
 ## External Dependences
 the following libraries are needed:
