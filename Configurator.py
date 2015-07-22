@@ -34,7 +34,7 @@ class Configurator ():
 
 
 	def get (self, section, key):
-		self.__lock.acquire()
+#		self.__lock.acquire()
 
 		if section not in self.__config.keys():
 			raise Exception ("Section '%s' does not exist" % (section))
@@ -43,24 +43,24 @@ class Configurator ():
 			raise Exception ("Option '%s' does not exist in section '%s'" % (key, section))
 
 		value = self.__config[section][key]
-		self.__lock.release()
+#		self.__lock.release()
 		
 		return value
 
 	def getSections(self):
-		self.__lock.acquire()
+#		self.__lock.acquire()
 		result = self.__config.keys()
-		self.__lock.release()
+#		self.__lock.release()
 		return result
 
 	def getOptions (self, section):
-		self.__lock.acquire()
+#		self.__lock.acquire()
 
 		if section not in self.__config.keys():
 			raise Exception ("Section '%s' is does not exist" % (section))
 
 		result = self.__config[section].keys()
-		self.__lock.release()
+#		self.__lock.release()
 		return result 
 
 

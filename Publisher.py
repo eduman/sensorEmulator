@@ -146,7 +146,6 @@ class Publisher(object):
 			if os.path.exists(self.csvFolder):
 				for file in os.listdir(self.csvFolder):
 					if file.endswith(".csv"):
-						pass
 						buiding = CSVScanner(os.path.splitext(file)[0], self.logger, self.csvFolder, self.configurator, self.mqtt)
 						self.buildingThreadList.append(buiding)
 						buiding.start()

@@ -66,6 +66,7 @@ class CSVScanner(threading.Thread):
 				payload = MQTTPayload.getMQTTPayload(topic, self.buildingID, self.buildingID, events)
 
 				self.mqtt.syncPublish(topic, payload)
+				#self.mqtt.publish(topic, payload)
 				self.logger.debug ("sending: %s", payload)
 
 				if self.index < len (dataset):

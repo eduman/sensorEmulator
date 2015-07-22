@@ -106,7 +106,7 @@ class Subscriber(object):
 
 		self.mqttc = MyMQTTClass(self.subscriberName, self.logger, self)
 		self.mqttc.connect(self.brokerUri,self.brokerPort)
-		self.subscribedEventList = self.mqttc.subscribeEvent(None, EventTopics.getMeasurementEvent())
+		self.subscribedEventList = self.mqttc.subscribeEvent(None, EventTopics.getMeasurementEvent(None))
 
 	
 		self.loop()
