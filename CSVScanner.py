@@ -56,19 +56,36 @@ class CSVScanner(threading.Thread):
 
 			while self.isLoop:
 				# TODO: header csv in CSVHeader.py 
-				while (isnan(dataset['P'][self.index]) or isnan(dataset['T_ex'][self.index])):
+				while (isnan(dataset['P'][self.index]) or 
+					isnan(dataset['En'][self.index]) or 
+					isnan(dataset['T_ex'][self.index]) or
+					isnan(dataset['Flow rate'][self.index]) or 
+					isnan(dataset['T_man_sec'][self.index]) or 
+					isnan(dataset['T_rit_sec'][self.index]) or 
+					isnan(dataset['T_man_prim'][self.index]) or 
+					isnan(dataset['T_rit_prim'][self.index])):
 					self.index += 1
 
 				topic = EventTopics.getMeasurementEvent(self.buildingID)
 				fakeDate = datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')
+
+
 				events = MQTTPayload.getSingleEvent(dataset['P'][self.index], "Power", dataset['Date'][self.index], fakeDate)
+				events += "," + MQTTPayload.getSingleEvent(dataset['En'][self.index], "Energy", dataset['Date'][self.index], fakeDate)
 				events += "," + MQTTPayload.getSingleEvent(dataset['T_ex'][self.index], "External Temperature", dataset['Date'][self.index], fakeDate)
+				events += "," + MQTTPayload.getSingleEvent(dataset['Flow rate'][self.index], "Mass water flow", dataset['Date'][self.index], fakeDate)
+				events += "," + MQTTPayload.getSingleEvent(dataset['T_man_sec'][self.index], "Temperatura mandata secondario", dataset['Date'][self.index], fakeDate)
+				events += "," + MQTTPayload.getSingleEvent(dataset['T_rit_sec'][self.index], "Temperatura ritorno secondario", dataset['Date'][self.index], fakeDate)
+				events += "," + MQTTPayload.getSingleEvent(dataset['T_man_prim'][self.index], "Temperatura mandata primario", dataset['Date'][self.index], fakeDate)
+				events += "," + MQTTPayload.getSingleEvent(dataset['T_rit_prim'][self.index], "Temperatura ritorno primario", dataset['Date'][self.index], fakeDate)				
+
+
 				payload = MQTTPayload.getMQTTPayload(topic, self.buildingID, self.buildingID, events)
 
 				self.mqtt.syncPublish(topic, payload)
 				#self.mqtt.publish(topic, payload)
-				self.logger.debug ("sending: %s", payload)
-
+				#self.logger.debug ("sending: %s", payload)
+				self.logger.debug ("sending pkt n. %d, topic %s" %(self.index, topic))
 				if self.index < len (dataset):
 					self.index += 1
 				else:
